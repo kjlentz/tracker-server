@@ -1,4 +1,4 @@
-const db = require('../db/db');
+const db = require('../db/connection');
 
 const users = db.get('users');
 users.createIndex('username', {unique: true});
