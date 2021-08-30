@@ -1,7 +1,7 @@
 const express = require("express");
 const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
 const cookieParser = require("cookie-parser");
+const { buildSchema } = require("graphql");
 
 const PORT = 4000;
 
@@ -29,24 +29,14 @@ app.use(function(req, res, next) {
 //AUTH Route
 app.use('/auth', authRouter);
 
-
-const schema = buildSchema(`
-    type Query {
-        hello: String
-    }
-`);
-
-const root = {
-    hello: () => {
-        return 'Hello world!';
-    }
-};
+/* ------ GRAPHQL ------ */
+const { mergeSchemas } = require('@graphql-tools/schema');
+const userSchema = require("./graphql/user");
 
 app.use('/graphql',
     auth.isLoggedIn,
     graphqlHTTP({
-        schema: schema,
-        rootValue: root,
+        schema: mergeSchemas(userSchema),
         graphiql: true,
 }));
 

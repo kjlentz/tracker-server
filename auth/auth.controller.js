@@ -38,21 +38,20 @@ const createTokenSendResponse = async (payload, res, next) => {
 //root path
 const get = (req, res) => {
     res.json({
-      message: 'Auth',
+        message: 'Auth',
     });
-  };
+};
   
 
 
 const signup = async (req, res, next) => {
-    console.log("signup")
     try {
 
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
         const date = new Date();
         
-        //cretae newUser Object
+        //create newUser Object
         const newUser = {
             username: req.body.username,
             password: hashedPassword,
