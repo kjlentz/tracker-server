@@ -1,7 +1,6 @@
 const express = require("express");
 const { graphqlHTTP } = require('express-graphql');
 const cookieParser = require("cookie-parser");
-const { buildSchema } = require("graphql");
 
 const PORT = 4000;
 

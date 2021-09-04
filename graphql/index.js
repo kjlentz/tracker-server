@@ -1,5 +1,6 @@
 const { createApplication, createModule, gql } = require('graphql-modules');
 const { travelsSchema } = require('./travels');
+const { locationsSchema } = require("./locations");
 
 const root = createModule({
     id: "root",
@@ -18,7 +19,7 @@ const root = createModule({
 })
 
 const application = createApplication({
-    modules: [root, travelsSchema ],
+    modules: [root, locationsSchema, travelsSchema ],
 });
 
 module.exports = {
