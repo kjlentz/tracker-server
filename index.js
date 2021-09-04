@@ -15,7 +15,6 @@ app.use(auth.checkTokenSetUser);
 
 
 app.use(function(req, res, next) {
-	console.log("Headers")
 	res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
@@ -29,16 +28,25 @@ app.use(function(req, res, next) {
 //AUTH Route
 app.use('/auth', authRouter);
 
+
+
+
 /* ------ GRAPHQL ------ */
-const { mergeSchemas } = require('@graphql-tools/schema');
-const userSchema = require("./graphql/user");
+const { application } = require("./graphql");
+
+const execute = application.createExecution();
+const schema = application.schema;
+
 
 app.use('/graphql',
     auth.isLoggedIn,
-    graphqlHTTP({
-        schema: mergeSchemas(userSchema),
-        graphiql: true,
-}));
+    express.json(),
+    graphqlHTTP(req => ({
+        schema,
+        context: req,
+        customExecuteFn: execute,
+        graphiql: false,
+})));
 
 app.listen(PORT, () => {
     console.log("Tracker server listening on port " + PORT);

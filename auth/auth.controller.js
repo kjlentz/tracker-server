@@ -5,8 +5,6 @@ const { users } = require('./auth.db');
 
 const createTokenSendResponse = async (payload, res, next) => {
 
-    console.log("create token sned response")
-
     jwt.sign(
         payload,
         process.env.TOKEN_SECRET, {

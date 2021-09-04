@@ -10,8 +10,6 @@ const { users } = require('./auth.db');
 */
 async function checkTokenSetUser(req, res, next) {
 
-    console.log("Check token set user")
-
     //get the auth header from the request
     const token = req.cookies.access_token;
 
@@ -48,8 +46,6 @@ async function checkTokenSetUser(req, res, next) {
 */
 const validateSignUpUser = (defaultErrorMessage) => (req, res, next) => {
 
-    console.log("validate sign up")
-
     if(!req.body.username || !req.body.password) {
         console.log("error");
         const error = new Error("Unable to sign up.");
@@ -77,9 +73,6 @@ const validateLoginUser = (defaultErrorMessage = '') => (req, res, next) => {
 
 
 const findUser = (defaultLoginError, isError, errorCode = 422) => async (req, res, next) => {
-
-    console.log("find user")
-
     try {
         const user = await users.findOne({
             username: req.body.username,
