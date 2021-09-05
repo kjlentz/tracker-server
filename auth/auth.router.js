@@ -6,7 +6,7 @@ const middlewares = require('./auth.middlewares');
 const router = express.Router();
 
 const defaultLoginError = 'Unable to login';
-const signInError = 'This Email is already taken';
+const signInError = 'This Username is already taken';
 
 router.get('/', controller.get);
 

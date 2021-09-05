@@ -47,7 +47,7 @@ const signup = async (req, res, next) => {
 
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
-        const date = new Date();
+        const date = new Date().toUTCString();
         
         //create newUser Object
         const newUser = {
