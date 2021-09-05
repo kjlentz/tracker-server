@@ -1,11 +1,11 @@
 const express = require("express");
-const { graphqlHTTP } = require('express-graphql');
 const cookieParser = require("cookie-parser");
 
 const PORT = 4000;
 
 const auth = require("./auth/auth.middlewares");
 const authRouter = require("./auth/auth.router");
+const travelsRouter = require("./travels/travels.router");
 
 const app = express();
 app.use(express.json());
@@ -27,25 +27,27 @@ app.use(function(req, res, next) {
 //AUTH Route
 app.use('/auth', authRouter);
 
+app.use("/travel", auth.isLoggedIn, travelsRouter);
 
 
 
-/* ------ GRAPHQL ------ */
-const { application } = require("./graphql");
-
-const execute = application.createExecution();
-const schema = application.schema;
 
 
-app.use('/graphql',
-    auth.isLoggedIn,
-    express.json(),
-    graphqlHTTP(req => ({
-        schema,
-        context: req,
-        customExecuteFn: execute,
-        graphiql: false,
-})));
+function errorHandler(err, req, res, next){
+	res.status(res.statusCode || 500);
+
+	let stack;
+	if(process.env.NODE_ENV !== 'production') { stack = err.stack; }
+
+	res.json({
+		message: err.message,
+		stack
+	})
+}
+
+app.use(errorHandler);
+
+
 
 app.listen(PORT, () => {
     console.log("Tracker server listening on port " + PORT);
