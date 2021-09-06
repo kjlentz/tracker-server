@@ -90,13 +90,13 @@ const startTravel = async (req, res, next) => {
 const endTravel = async (req, res, next) => {
 
     const body = req.body;
-    const { location, time, vehicle, travel_id } = body;
+    const { location, time, travel_id } = body;
     const user_id = req.user._id;
 
-    if(!location || !time || !vehicle || !travel_id) {
+    if(!location || !time || !travel_id) {
         res.status(400).json({
             error: true,
-            message: "Travel_id, location, time and vehicle needs to be provided"
+            message: "Travel_id, location and time needs to be provided"
         })
         return;
     }
@@ -134,8 +134,34 @@ const endTravel = async (req, res, next) => {
 
 }
 
+const ongoingTravel = async (req, res, next) => {
+
+    const user_id = req.user._id;
+
+    try {
+        const db_result = await events.findOne({
+            owner_id: new ObjectID(user_id),
+            end_time: "----"
+        })
+
+        if(!db_result) {
+            error = new Error("Could not find travel event");
+            next(error);
+            return;
+        }
+
+        res.status(200).json(db_result);
+
+    } catch(err) {
+        error = new Error(err);
+        next(error);
+    }
+
+}
+
 module.exports = {
     allTravels,
     startTravel,
-    endTravel
+    endTravel,
+    ongoingTravel
 }

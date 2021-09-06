@@ -10,30 +10,39 @@ const { users } = require('./auth.db');
 */
 async function checkTokenSetUser(req, res, next) {
 
-    //get the auth header from the request
-    const token = req.cookies.access_token;
 
-    //if there is a header
-    if(token){
+    const authHeader = req.get('authorization');
 
-        //verify the token with the token secret
-        jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
+    if(authHeader){
 
-            //log the error
-            if(error){
-                res.status(401);
-                next(error);
-            }
+        //get the tooken
+        const token = authHeader.split(' ')[1];
 
-            //get the corresponding user from the db
-            req.user = user;
+        //if there is a header
+        if(token){
 
-            //call the next middleware
+            //verify the token with the token secret
+            jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
+
+                //log the error
+                if(error){
+                    res.status(401);
+                    next(error);
+                }
+
+                //get the corresponding user from the db
+                req.user = user;
+
+                //call the next middleware
+                next();
+
+            })
+        
+        //if there is no token, call next middleware
+        } else {
             next();
+        }
 
-        })
-    
-    //if there is no token, call next middleware
     } else {
         next();
     }

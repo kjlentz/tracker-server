@@ -2,11 +2,16 @@ const express = require('express');
 
 const router = express.Router();
 
-const { allTravels, startTravel, endTravel } = require("./travels.controller");
+const { allTravels, startTravel, endTravel, ongoingTravel } = require("./travels.controller");
 
 router.get(
     "/",
     allTravels
+)
+
+router.get(
+    "/ongoing",
+    ongoingTravel
 )
 
 router.post(

@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'POST');
+        res.header('Access-Control-Allow-Methods', 'POST, PUT');
         return res.status(200).json({});
     };
   	next();
@@ -40,6 +40,7 @@ function errorHandler(err, req, res, next){
 	if(process.env.NODE_ENV !== 'production') { stack = err.stack; }
 
 	res.json({
+		error: true,
 		message: err.message,
 		stack
 	})
