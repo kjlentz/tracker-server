@@ -1,8 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
-const PORT = 4000;
+const PORT = 8080;
 
+const seed = require("./auth/seed")
 const auth = require("./auth/auth.middlewares");
 const authRouter = require("./auth/auth.router");
 const travelsRouter = require("./travels/travels.router");
@@ -48,6 +49,8 @@ function errorHandler(err, req, res, next){
 
 app.use(errorHandler);
 
+
+seed();
 
 
 app.listen(PORT, () => {
