@@ -9,10 +9,6 @@ const authRouter = require("./auth/auth.router");
 const travelsRouter = require("./travels/travels.router");
 
 const app = express();
-app.use(express.json());
-app.use(cookieParser());
-app.use(auth.checkTokenSetUser);
-
 
 app.use(function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
@@ -23,6 +19,13 @@ app.use(function(req, res, next) {
     };
   	next();
 });
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(auth.checkTokenSetUser);
+
+
+
 
 
 //AUTH Route

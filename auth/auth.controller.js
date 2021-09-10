@@ -20,10 +20,6 @@ const createTokenSendResponse = async (payload, res, next) => {
             } else {
 
                 return res
-                    /* .cookie("access_token", token, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                    }) */
                     .status(200)
                     .json({ ok: true, username: payload.username, token: token });
 
