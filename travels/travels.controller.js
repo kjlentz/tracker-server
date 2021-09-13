@@ -159,9 +159,41 @@ const ongoingTravel = async (req, res, next) => {
 
 }
 
+const deleteTravel = async (req, res, next) => {
+
+    const user_id = req.user._id;
+
+    console.log(req.body);
+
+    try {
+
+        const body = {
+            owner_id: new ObjectID(user_id),
+            _id: new ObjectID(req.body._id)
+        }
+
+        const db_result = await events.remove(body)
+
+        console.log(db_result);
+
+        if(!db_result) {
+            error = new Error("Could not find travel event");
+            next(error);
+            return;
+        }
+
+        res.status(200).json(db_result);
+    } catch(err) {
+        error = new Error(err);
+        next(error)
+    }
+
+}
+
 module.exports = {
     allTravels,
     startTravel,
     endTravel,
-    ongoingTravel
+    ongoingTravel,
+    deleteTravel
 }

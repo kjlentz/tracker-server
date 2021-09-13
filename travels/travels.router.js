@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const { allTravels, startTravel, endTravel, ongoingTravel } = require("./travels.controller");
+const { allTravels, startTravel, endTravel, ongoingTravel, deleteTravel } = require("./travels.controller");
 
 router.get(
     "/",
@@ -22,6 +22,11 @@ router.post(
 router.put(
     "/",
     endTravel
+)
+
+router.delete(
+    "/",
+    deleteTravel
 )
 
 module.exports = router;
